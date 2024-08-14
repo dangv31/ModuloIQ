@@ -6,24 +6,32 @@ from src.gestor_aplicacion.Categoria import Categoria
 from src.gestor_aplicacion.Maestro import Maestro
 from src.gestor_aplicacion.Observacion import Observacion
 from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
+from src.ui_main.Cambiar_Estado import Cambiar_Estado
 
 class Interfaz_Observacion:
     @classmethod
-    def generar_observacion(cls, cuenta, objeto, id, ventana, maestro):
+    def generar_observacion(cls, cuenta, objeto, id, ventana, tipo_cambio):
         def registrar_observacion():
             detalle = entry_detalle.get()
-            if isinstance(objeto, Categoria):
-                objeto.maestro.observaciones.append(Observacion(cuenta, detalle))
-                Gestor_Base.actualizar_objeto(objeto, id)
-                from src.ui_main.gestion_maestros.Editar_Datos_Basicos_Maestro import Editar_Datos_Basicos_Maestro
-                Editar_Datos_Basicos_Maestro.editar_datos_basicos(maestro, cuenta, id, ventana)
+            if tipo_cambio == "info":
+                if isinstance(objeto, Categoria):
+                    objeto.maestro.observaciones.append(Observacion(cuenta, detalle))
+                    Gestor_Base.actualizar_objeto(objeto, id)
 
-            else:
+                else:
+                    objeto.observaciones.append(Observacion(cuenta, detalle))
+                    Gestor_Base.actualizar_objeto(objeto, id)
+                    if isinstance(objeto, Maestro):
+                        from src.ui_main.gestion_maestros.Editar_Datos_Basicos_Maestro import Editar_Datos_Basicos_Maestro
+                        Editar_Datos_Basicos_Maestro.editar_datos_basicos(objeto, cuenta, id, ventana)
+            elif tipo_cambio == "estado":
+                Cambiar_Estado.cambiar_estado(objeto, cuenta, id)
                 objeto.observaciones.append(Observacion(cuenta, detalle))
                 Gestor_Base.actualizar_objeto(objeto, id)
                 if isinstance(objeto, Maestro):
-                    from src.ui_main.gestion_maestros.Editar_Datos_Basicos_Maestro import Editar_Datos_Basicos_Maestro
-                    Editar_Datos_Basicos_Maestro.editar_datos_basicos(maestro, cuenta, id, ventana)
+                    from src.ui_main.Menu_inicial import Menu_inicial
+                    Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
+
 
             messagebox.showinfo("Éxito", "¡Observación registrada con éxito!")
 

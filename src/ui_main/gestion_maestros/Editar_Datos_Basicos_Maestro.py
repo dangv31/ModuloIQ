@@ -12,14 +12,14 @@ class Editar_Datos_Basicos_Maestro:
         def cambiar_nombre():
             nombre_nuevo = entry_nombre.get()
             maestro.nombre = nombre_nuevo
-            Interfaz_Observacion.generar_observacion(cuenta, maestro, id, ventana, maestro)
+            Interfaz_Observacion.generar_observacion(cuenta, maestro, id, ventana, "info")
             # No cerramos la ventana principal, solo actualizamos la UI si es necesario
 
         def cambiar_nombre_columna():
             index_columna = int(combo_columnas.get().split('.')[0]) - 1
             nombre_col = entry_columna.get()
             maestro.columnas[index_columna] = nombre_col
-            Interfaz_Observacion.generar_observacion(cuenta, maestro, id, ventana, maestro)
+            Interfaz_Observacion.generar_observacion(cuenta, maestro, id, ventana, "info")
             # No cerramos la ventana principal, solo actualizamos la UI si es necesario
 
         from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo

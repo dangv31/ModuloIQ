@@ -9,6 +9,3 @@ class Cambiar_Estado:
             objeto.estado = False
         else:
             objeto.estado = True
-        Observacion.generar_observacion(cuenta, objeto)
-        Gestor_Base.actualizar_objeto(objeto, id)
-        print("Cambio realizado con exito!")
