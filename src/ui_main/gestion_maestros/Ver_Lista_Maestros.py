@@ -1,50 +1,60 @@
+import tkinter as tk
+from tkinter import messagebox, ttk
+
 from src.base_datos.Gestor_Base import Gestor_Base
-from src.gestor_aplicacion.Maestro import Maestro
 from src.ui_main.gestion_maestros.Crear_Maestro import Crear_Maestro
+from src.ui_main.herramientas.volver_menu import volver_menu
 
 
 class Ver_Lista_Maestros:
     @classmethod
-    def ver_lista_maestros(cls, cuenta):
-        indice = 1
+    def ver_lista_maestros(cls, cuenta, ventana):
+        # Limpiar la ventana para mostrar la lista de maestros
+        for widget in ventana.winfo_children():
+            widget.destroy()
+
         lista_maestros = Gestor_Base.lista_maestros()
+
         if len(lista_maestros) == 0:
             if "Administrativo" in cuenta.rol:
-                while True:
-                    opc_crear = input("No hay maestros registrados, ¿desea registrar alguno ingrese una de las opciones (s/n)?")
-                    if opc_crear == "s" or opc_crear == "n":
-                        break
-                    else:
-                        print("Ingrese una opcion valida")
-            else:
-                print("No hay maestros registrados")
-                opc_crear = "n"
-            if opc_crear == "s":
-                Crear_Maestro.crear_maestro(cuenta)
-            else:
-                from src.ui_main.Menu_inicial import Menu_inicial
-                if "Administrativo" in cuenta.rol:
-                    Menu_inicial.menu_inicial_Administrativo(cuenta)
+                respuesta = messagebox.askyesno("No hay maestros registrados",
+                                                "¿Desea registrar algún maestro?")
+                if respuesta:
+                    Crear_Maestro.crear_maestro(cuenta, ventana)
                 else:
-                    Menu_inicial.menu_inicial_Clinico(cuenta)
-        for ID, maestro in lista_maestros:
-            print()
-            print(f"ID:{ID} - Maestro {indice}:")
-            print(f"Nombre: {maestro.nombre}")
-            print("Columnas: ")
-            for columna in maestro.columnas:
-                print(columna, end=" ")
-            print("")
-            print("Categorias")
-            for categoria in maestro.categorias:
-                print(categoria)
-            print()
-            indice +=1
-        print()
-        entrada = input("Ingrese cualquier caracter para volver al menu incial ")
-        if entrada:
-            from src.ui_main.Menu_inicial import Menu_inicial
-            if "Administrativo" in cuenta.rol:
-                Menu_inicial.menu_inicial_Administrativo(cuenta)
+                    cls.volver_menu(cuenta, ventana)
             else:
-                Menu_inicial.menu_inicial_Clinico(cuenta)
+                messagebox.showinfo("Información", "No hay maestros registrados")
+                cls.volver_menu(cuenta, ventana)
+            return
+
+        frame = ttk.Frame(ventana)
+        frame.pack(fill=tk.BOTH, expand=True)
+
+        # Título
+        label_titulo = tk.Label(frame, text="Lista de Maestros", font=('Arial', 14, 'bold'))
+        label_titulo.pack(pady=10)
+
+        # Mostrar cada maestro
+        for indice, (ID, maestro) in enumerate(lista_maestros, start=1):
+            label_maestro = tk.Label(frame, text=f"ID:{ID} - Maestro {indice}: {maestro.nombre}", font=('Arial', 12))
+            label_maestro.pack(anchor="w", padx=10, pady=2)
+
+            label_columnas = tk.Label(frame, text="Columnas: " + ", ".join(maestro.columnas), font=('Arial', 10))
+            label_columnas.pack(anchor="w", padx=20)
+            label_cat = tk.Label(frame, text="Categorias:", font=('Arial', 10))
+            label_cat.pack(anchor="w", padx=20)
+            for categoria in maestro.categorias:
+                label_categorias = tk.Label(frame, text=categoria, font=('Arial', 10))
+                label_categorias.pack(anchor="w", padx=20)
+
+            label_obs = tk.Label(frame, text="Observaciones:")
+            label_obs.pack(anchor="w", padx=20)
+            label_observaciones = tk.Label(frame, text=maestro.observaciones, font=('Arial', 10))
+            label_observaciones.pack(anchor="w", padx=20)
+
+            separator = ttk.Separator(frame, orient='horizontal')
+            separator.pack(fill=tk.X, pady=5)
+
+        boton_volver = tk.Button(frame, text="Volver al menú inicial", command=lambda: volver_menu(cuenta, ventana))
+        boton_volver.pack(pady=20)

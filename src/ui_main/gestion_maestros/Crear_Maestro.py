@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from src.base_datos.Gestor_Base import Gestor_Base
 from src.gestor_aplicacion.Maestro import Maestro
+from src.ui_main.herramientas.volver_menu import volver_menu
 
 class Crear_Maestro:
     @classmethod
@@ -52,7 +53,7 @@ class Crear_Maestro:
                 Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
 
         # Botón para agregar una nueva columna
-        label_nombre_col = tk.Label(frame, text="Ingrese el nombre de las columnas (Ingrese '#' para finalizar):")
+        label_nombre_col = tk.Label(frame, text="Ingrese el nombre de las columnas y oprima Enter o el boton Agregar columna:")
         label_nombre_col.pack(pady=5)
         entrada_columna = tk.Entry(frame)
         entrada_columna.pack(pady=5)
@@ -73,7 +74,7 @@ class Crear_Maestro:
         boton_finalizar.pack(pady=20)
 
         # Botón para cancelar creacion de maestro
-        boton_cancelar = tk.Button(frame, text="Cancelar", command=lambda: Menu_inicial.menu_inicial_Administrativo(cuenta, ventana))
+        boton_cancelar = tk.Button(frame, text="Cancelar", command=lambda: volver_menu(cuenta, ventana))
         boton_cancelar.pack()
 
         def on_enter(event):

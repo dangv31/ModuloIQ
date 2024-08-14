@@ -10,10 +10,8 @@ class Observacion:
         return f"Cuenta que realizo esta observacion: {self.cuenta}\n Detalle: {self.detalle}"
 
     @classmethod
-    def generar_observacion(cls, cuenta, objeto):
-        detalle = input("Ingrese el motivo de los cambios:")
+    def generar_observacion(cls, cuenta, objeto, detalle):
         if isinstance(objeto, Categoria):
             objeto.maestro.observaciones.append(Observacion(cuenta, detalle))
         else:
             objeto.observaciones.append(Observacion(cuenta, detalle))
-        print("Observacion Registrada!")

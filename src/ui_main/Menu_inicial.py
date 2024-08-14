@@ -2,17 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
 from src.ui_main.gestion_maestros.Crear_Maestro import Crear_Maestro
-from src.base_datos.Gestor_Base import Gestor_Base
-from src.gestor_aplicacion.Cuenta import Cuenta
-from src.gestor_aplicacion.Sede import Sede
-from src.ui_main.gestion_cuentas.Menu_Gestion_Cuentas import Menu_Gestion_Cuentas
-from src.ui_main.gestion_maestros.Menu_Gestion_Maestros import Menu_Gestion_Maestros
 from src.ui_main.gestion_maestros.Ver_Lista_Maestros import Ver_Lista_Maestros
 from src.ui_main.gestion_maestros.Ver_Maestro import Ver_Maestro
-from src.ui_main.gestion_sedes.Menu_Gestion_Sede import Menu_Gestion_Sede
-from src.ui_main.gestion_sedes.Ver_Lista_Sedes import Ver_Lista_Sedes
-from src.ui_main.gestion_sedes.Ver_Sede import Ver_Sede
-
+from src.ui_main.gestion_maestros.Editar_Maestro import Editar_Maestro
 class Menu_inicial:
     @classmethod
     def menu_inicial_Administrativo(cls, cuenta, frame):
@@ -34,7 +26,8 @@ class Menu_inicial:
         menu_admin.add_cascade(label="Gestion Maestros", menu=opcion_gestion_maestros)
         opcion_gestion_maestros.add_command(label="Crear Maestro", command=lambda: Crear_Maestro.crear_maestro(cuenta, frame))
         opcion_gestion_maestros.add_command(label="Ver Maestro", command=lambda: Ver_Maestro.ver_maestro(cuenta, frame))
-        opcion_gestion_maestros.add_command(label="Editar Maestro")
+        opcion_gestion_maestros.add_command(label="Ver Lista Maestros", command=lambda: Ver_Lista_Maestros.ver_lista_maestros(cuenta, frame))
+        opcion_gestion_maestros.add_command(label="Editar Maestro", command=lambda: Editar_Maestro.editar_maestro(cuenta,frame))
         opcion_gestion_sedes = tk.Menu(menu_admin, tearoff=0)
         menu_admin.add_cascade(label="Gestion Sedes", menu=opcion_gestion_sedes)
         opcion_gestion_sedes.add_command(label="Ver Sede")
