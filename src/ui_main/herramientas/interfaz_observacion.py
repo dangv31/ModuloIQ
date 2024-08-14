@@ -14,27 +14,16 @@ class Interfaz_Observacion:
         def registrar_observacion():
             detalle = entry_detalle.get()
             if tipo_cambio == "info":
-                if isinstance(objeto, Categoria):
-                    objeto.maestro.observaciones.append(Observacion(cuenta, detalle))
-                    Gestor_Base.actualizar_objeto(objeto, id)
+                objeto.observaciones.append(Observacion(cuenta, detalle))
+                Gestor_Base.actualizar_objeto(objeto, id)
 
-                else:
-                    objeto.observaciones.append(Observacion(cuenta, detalle))
-                    Gestor_Base.actualizar_objeto(objeto, id)
-                    if isinstance(objeto, Maestro):
-                        from src.ui_main.gestion_maestros.Editar_Datos_Basicos_Maestro import Editar_Datos_Basicos_Maestro
-                        Editar_Datos_Basicos_Maestro.editar_datos_basicos(objeto, cuenta, id, ventana)
             elif tipo_cambio == "estado":
                 Cambiar_Estado.cambiar_estado(objeto, cuenta, id)
                 objeto.observaciones.append(Observacion(cuenta, detalle))
                 Gestor_Base.actualizar_objeto(objeto, id)
-                if isinstance(objeto, Maestro):
-                    from src.ui_main.Menu_inicial import Menu_inicial
-                    Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
-
-
-            messagebox.showinfo("Éxito", "¡Observación registrada con éxito!")
-
+            messagebox.showinfo("Éxito", "¡Observación y cambio registrado con éxito!")
+            from src.ui_main.Menu_inicial import Menu_inicial
+            Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
         imprimir_titulo(ventana, "Generar observacion")
 
         label = tk.Label(ventana, text="Ingrese el motivo de los cambios:")
