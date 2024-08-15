@@ -28,7 +28,7 @@ class Inicio_sesion:
                     else:
                         print()
                         print(f"¡Bienvenido {cuenta_encontrada.nombres}!")
-                        Menu_inicial.menu_inicial_Clinico(cuenta_encontrada)
+                        Menu_inicial.menu_inicial_Clinico(cuenta_encontrada, ventana)
                 else:
                     respuesta = messagebox.askyesno("Cuenta deshabilitada", "Esta cuenta está deshabilitada. ¿Deseas cerrar la aplicación?")
                     if respuesta:

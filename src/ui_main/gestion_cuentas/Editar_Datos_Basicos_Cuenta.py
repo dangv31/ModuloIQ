@@ -1,182 +1,87 @@
-from src.base_datos.Gestor_Base import Gestor_Base
+import tkinter as tk
+from tkinter import ttk, messagebox
 from src.gestor_aplicacion.Observacion import Observacion
-
+from src.base_datos.Gestor_Base import Gestor_Base
+from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
+from src.ui_main.herramientas.volver_menu import volver_menu
+from src.ui_main.herramientas.interfaz_observacion import Interfaz_Observacion
 
 class Editar_Datos_Basicos_Cuenta:
     @classmethod
-    def editar_datos_basicos(cls, cuenta_e, cuenta, id):
+    def editar_datos_basicos(cls, cuenta_e, cuenta, id, ventana):
+        def cambiar_nombre():
+            nombre_nuevo = entry_nombre.get()
+            cuenta_e.nombres = nombre_nuevo
+            Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
 
-        global num_documento_nuevo
-        while True:
-            print("Seleccione la opcion que desea realizar: ")
-            print("1. Cambiar nombre")
-            print("2. Cambiar apellido")
-            print("3. Cambiar numero de documento")
-            print("4. Cambiar fecha de nacimiento")
-            print("5. Cambiar correo")
-            print("6. Cambiar rol")
-            print("7. Cambiar sede")
-            print("8. Volver al menu inicial")
-            print()
-            opcion = input()
-            if opcion == "1":
-                nombre_nuevo = input("Ingrese el nombre nuevo: ")
-                cuenta_e.nombres = nombre_nuevo
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
+        def cambiar_apellido():
+            apellido_nuevo = entry_apellido.get()
+            cuenta_e.apellidos = apellido_nuevo
+            Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
 
-            elif opcion == "2":
-                apellido_nuevo = input("Ingrese el apellido nuevo: ")
-                cuenta_e.apellidos = apellido_nuevo
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
-
-            elif opcion == "3":
-                while True:
-                    try:
-                        num_documento_nuevo = int(input("Ingrese el nuevo numero de documento: "))
-                        busqueda = Gestor_Base.buscar_objeto(num_documento_nuevo, "Cuenta")
-                        if busqueda is None:
-                            break
-                        else:
-                            print("Ya hay una cuenta creada con este numero de documento")
-                    except ValueError:
-                        print("Error: Numero de documento debe ser un valor numérico. Intente de nuevo.")
-                id, cuenta_e = Gestor_Base.buscar_objeto(num_documento_nuevo, "Cuenta")
+        def cambiar_num_documento():
+            try:
+                num_documento_nuevo = int(entry_documento.get())
                 cuenta_e.doc = num_documento_nuevo
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
+                Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
+            except ValueError:
+                messagebox.showerror("Error", "Número de documento debe ser numérico.")
 
-            elif opcion == "4":
-                fecha_nacimiento_nueva = input("Ingrese la nueva fecha de nacimiento: ")
-                cuenta_e.nacimiento = fecha_nacimiento_nueva
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
+        def cambiar_fecha_nacimiento():
+            fecha_nacimiento_nueva = entry_nacimiento.get()
+            cuenta_e.nacimiento = fecha_nacimiento_nueva
+            Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
 
-            elif opcion == "5":
-                correo_nuevo = input("Ingrese el nuevo correo: ")
-                cuenta_e.correo = correo_nuevo
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
+        def cambiar_correo():
+            correo_nuevo = entry_correo.get()
+            cuenta_e.correo = correo_nuevo
+            Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
 
-            elif opcion == "6":
-                while True:
-                    print("1. Administrativo")
-                    print("2. Clinico")
-                    print("3. Administrativo-Clinico")
-                    opc = input("Seleccione el rol que tendrá el usuario: ")
-                    cuenta_e.rol.clear()
-                    if opc in ["1", "2", "3"]:
-                        if opc == "1" and "Administrativo" in cuenta.rol:
-                            cuenta_e.rol.append("Administrativo")
-                            break
-                        elif opc == "2" and "Clinico" in cuenta.rol:
-                            cuenta_e.rol.append("Clinico")
-                            break
-                        elif opc == "3" and "Administrativo" in cuenta.rol and "Clinico" in cuenta.rol:
-                            cuenta_e.rol.append("Administrativo")
-                            cuenta_e.rol.append("Clinico")
-                            break
-                        else:
-                            print("no tienes permiso para crear una cuenta con este rol")
-                            print()
-                    else:
-                        print("Error: Rol seleccionado no válido. Intente de nuevo.")
+        imprimir_titulo(ventana, "Editar datos básicos de la cuenta")
 
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
+        frame = ttk.Frame(ventana)
+        frame.pack()
 
-            elif opcion == "7":
+        # Opción para cambiar nombre
+        label_nombre = tk.Label(frame, text="Ingresa el nuevo nombre:")
+        label_nombre.pack(pady=5)
+        entry_nombre = tk.Entry(frame)
+        entry_nombre.pack(pady=5)
+        btn_cambiar_nombre = tk.Button(frame, text="Cambiar Nombre", command=cambiar_nombre)
+        btn_cambiar_nombre.pack(pady=5)
 
-                id_sede, sede = Gestor_Base.buscar_objeto("MedPLus Medellin", "Sede")
-                if cuenta_e in sede.personal:
-                    sede.personal.remove(cuenta_e)
-                    Gestor_Base.actualizar_objeto(sede, id_sede)
-                id_sede2, sede2 = Gestor_Base.buscar_objeto("MedPLus Manizales", "Sede")
-                if cuenta_e in sede2.personal:
-                    sede2.personal.remove(cuenta_e)
-                    Gestor_Base.actualizar_objeto(sede2, id_sede2)
-                id_sede3, sede3 = Gestor_Base.buscar_objeto("MedPLus Bogota", "Sede")
-                if cuenta_e in sede3.personal:
-                    sede3.personal.remove(cuenta_e)
-                    Gestor_Base.actualizar_objeto(sede3, id_sede3)
+        # Opción para cambiar apellido
+        label_apellido = tk.Label(frame, text="Ingresa el nuevo apellido:")
+        label_apellido.pack(pady=5)
+        entry_apellido = tk.Entry(frame)
+        entry_apellido.pack(pady=5)
+        btn_cambiar_apellido = tk.Button(frame, text="Cambiar Apellido", command=cambiar_apellido)
+        btn_cambiar_apellido.pack(pady=5)
 
-                cuenta_e.sede.clear()
+        # Opción para cambiar número de documento
+        label_documento = tk.Label(frame, text="Ingresa el nuevo número de documento:")
+        label_documento.pack(pady=5)
+        entry_documento = tk.Entry(frame)
+        entry_documento.pack(pady=5)
+        btn_cambiar_documento = tk.Button(frame, text="Cambiar Número de Documento", command=cambiar_num_documento)
+        btn_cambiar_documento.pack(pady=5)
 
-                while True:
-                    print("1. Medellin")
-                    print("2. Manizales")
-                    print("3. Bogota")
-                    print("4. Medellin-Manizales-Bogota")
-                    opc = input("seleccione la sede en donde estara el usuario: ")
-                    if opc == "1":
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede.nombre:
-                                tiene_sede = True
-                                break
-                        if tiene_sede:
-                            cuenta_e.sede.append(sede)
-                            sede.personal.append(cuenta_e)
-                            Gestor_Base.actualizar_objeto(sede, id_sede)
-                            break
-                    elif opc == "2":
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede2.nombre:
-                                tiene_sede = True
-                                break
-                        if tiene_sede:
-                            cuenta_e.sede.append(sede2)
-                            sede2.personal.append(cuenta_e)
-                            Gestor_Base.actualizar_objeto(sede2, id_sede2)
-                            break
-                    elif opc == "3":
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede3.nombre:
-                                tiene_sede = True
-                                break
-                        if tiene_sede:
-                            cuenta_e.sede.append(sede3)
-                            sede3.personal.append(cuenta_e)
-                            Gestor_Base.actualizar_objeto(sede3, id_sede3)
-                            break
-                    elif opc == "4":
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede.nombre or sed.nombre == sede2.nombre or sed.nombre == sede3.nombre:
-                                tiene_sede += 1
-                        if tiene_sede == 3:
-                            cuenta_e.sede.append(sede)
-                            sede.personal.append(cuenta_e)
-                            Gestor_Base.actualizar_objeto(sede, id_sede)
-                            cuenta_e.sede.append(sede2)
-                            sede2.personal.append(cuenta_e)
-                            Gestor_Base.actualizar_objeto(sede2, id_sede2)
-                            cuenta_e.sede.append(sede3)
-                            sede3.personal.append(cuenta_e)
-                            Gestor_Base.actualizar_objeto(sede3, id_sede3)
-                            break
-                    else:
-                        print("Opción no válida. Por favor, seleccione una opción válida.")
-                        print()
+        # Opción para cambiar fecha de nacimiento
+        label_nacimiento = tk.Label(frame, text="Ingresa la nueva fecha de nacimiento:")
+        label_nacimiento.pack(pady=5)
+        entry_nacimiento = tk.Entry(frame)
+        entry_nacimiento.pack(pady=5)
+        btn_cambiar_nacimiento = tk.Button(frame, text="Cambiar Fecha de Nacimiento", command=cambiar_fecha_nacimiento)
+        btn_cambiar_nacimiento.pack(pady=5)
 
-                Observacion.generar_observacion(cuenta, cuenta_e)
-                Gestor_Base.actualizar_objeto(cuenta_e, id)
-                print("Cambio realizado con exito!")
+        # Opción para cambiar correo
+        label_correo = tk.Label(frame, text="Ingresa el nuevo correo:")
+        label_correo.pack(pady=5)
+        entry_correo = tk.Entry(frame)
+        entry_correo.pack(pady=5)
+        btn_cambiar_correo = tk.Button(frame, text="Cambiar Correo", command=cambiar_correo)
+        btn_cambiar_correo.pack(pady=5)
 
-            elif opcion == "8":
-                from src.ui_main.Menu_inicial import Menu_inicial
-                Menu_inicial.menu_inicial_Administrativo(cuenta)
-                break
-
-            else:
-                print("Opción no válida. Por favor, seleccione una opción válida.")
-                print()
+        # Opción para volver al menú inicial
+        btn_volver = tk.Button(frame, text="Volver al Menú Inicial", command=lambda: volver_menu(cuenta, ventana))
+        btn_volver.pack(pady=10)

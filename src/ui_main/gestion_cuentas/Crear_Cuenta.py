@@ -1,133 +1,133 @@
+import tkinter as tk
+from tkinter import messagebox
 from src.base_datos.Gestor_Base import Gestor_Base
 from src.gestor_aplicacion.Cuenta import Cuenta
-
+from src.ui_main.herramientas.volver_menu import volver_menu
 
 class Crear_Cuenta:
     @classmethod
-    def crear_cuenta(cls, cuenta):
-        print("Por favor, ingrese la siguiente informacion sobre el usuario a crear: ")
-        nombre = input("Nombre: ")
-        apellido = input("Apellido: ")
-        while True:
+    def crear_cuenta(cls, cuenta, ventana):
+        from src.ui_main.Menu_inicial import Menu_inicial
+        from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
+        imprimir_titulo(ventana, "Crear Cuenta")
+
+        frame = tk.Frame(ventana)
+        frame.pack(pady=20, padx=20)
+
+        # Función para verificar el documento
+        def verificar_documento():
             try:
-                doc = int(input("Numero de documento: "))
+                doc = int(entrada_doc.get())
                 busqueda = Gestor_Base.buscar_objeto(doc, "Cuenta")
                 if busqueda is None:
-                    break
+                    return doc
                 else:
-                    print("Ya hay una cuenta creada con este numero de documento")
+                    messagebox.showerror("Error", "Ya existe una cuenta con este número de documento.")
             except ValueError:
-                print("Error: Numero de documento debe ser un valor numérico. Intente de nuevo.")
-        nacimiento = input("Fecha de nacimiento (DD/MM/AAAA): ")
-        correo = input("correo: ")
-        contrasena = input("Contraseña: ")
+                messagebox.showerror("Error", "El número de documento debe ser un valor numérico.")
 
-        cuenta_creada = Cuenta(nombre, apellido, doc, nacimiento, correo, contrasena)
+        def finalizar_creacion():
+            nombre = entrada_nombre.get()
+            apellido = entrada_apellido.get()
+            doc = verificar_documento()
+            if doc is None:
+                return
 
-        while True:
-            print("1. Administrativo")
-            print("2. Clinico")
-            print("3. Administrativo-Clinico")
-            opc = input("Seleccione el rol que tendrá el usuario: ")
-            if opc in ["1", "2", "3"]:
-                if opc == "1" and "Administrativo" in cuenta.rol:
-                    cuenta_creada.rol.append("Administrativo")
-                    break
-                elif opc == "2" and "Clinico" in cuenta.rol:
-                    cuenta_creada.rol.append("Clinico")
-                    break
-                elif opc == "3" and "Administrativo" in cuenta.rol and "Clinico" in cuenta.rol:
-                    cuenta_creada.rol.append("Administrativo")
-                    cuenta_creada.rol.append("Clinico")
-                    break
-                else:
-                    print("no tienes permiso para crear una cuenta con este rol")
-                    print()
+            nacimiento = entrada_nacimiento.get()
+            correo = entrada_correo.get()
+            contrasena = entrada_contrasena.get()
+
+            cuenta_creada = Cuenta(nombre, apellido, doc, nacimiento, correo, contrasena)
+
+            rol = rol_var.get()
+            sede = sede_var.get()
+
+            if rol == "Administrativo" and "Administrativo" in cuenta.rol:
+                cuenta_creada.rol.append("Administrativo")
+            elif rol == "Clinico" and "Clinico" in cuenta.rol:
+                cuenta_creada.rol.append("Clinico")
+            elif rol == "Administrativo-Clinico" and "Administrativo" in cuenta.rol and "Clinico" in cuenta.rol:
+                cuenta_creada.rol.append("Administrativo")
+                cuenta_creada.rol.append("Clinico")
             else:
-                print("Error: Rol seleccionado no válido. Intente de nuevo.")
+                messagebox.showerror("Error", "No tienes permiso para asignar este rol.")
+                return
 
-        while True:
-                print("1. Medellin")
-                print("2. Manizales")
-                print("3. Bogota")
-                print("4. Medellin-Manizales-Bogota")
-                opc = input("Seleccione la sede en donde estará el usuario: ")
-                print()
-                if opc in ["1", "2", "3", "4"]:
-                    if opc == "1":
-                        id_sede, sede = Gestor_Base.buscar_objeto("MedPLus Medellin", "Sede")
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede.nombre:
-                                tiene_sede = True
-                                break
-                        if tiene_sede:
-                            cuenta_creada.sede.append(sede)
-                            sede.personal.append(cuenta_creada)
-                            Gestor_Base.actualizar_objeto(sede, id_sede)
-                            break
-                        else:
-                            print("no tienes permiso para crear una cuenta en esta sede")
-                            print()
+            if sede == "Medellin" or sede == "Medellin-Manizales-Bogota":
+                id_sede, sede_obj = Gestor_Base.buscar_objeto("MedPLus Medellin", "Sede")
+                cuenta_creada.sede.append(sede_obj)
+                sede_obj.personal.append(cuenta_creada)
+                Gestor_Base.actualizar_objeto(sede_obj, id_sede)
 
-                    if opc == "2":
-                        id_sede2, sede2 = Gestor_Base.buscar_objeto("MedPLus Manizales", "Sede")
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede2.nombre:
-                                tiene_sede = True
-                                break
-                        if tiene_sede:
-                            cuenta_creada.sede.append(sede2)
-                            sede2.personal.append(cuenta_creada)
-                            Gestor_Base.actualizar_objeto(sede2, id_sede2)
-                            break
-                        else:
-                            print("no tienes permiso para crear una cuenta en esta sede")
-                            print()
-                    if opc == "3":
-                        id_sede3, sede3 = Gestor_Base.buscar_objeto("MedPLus Bogota", "Sede")
-                        tiene_sede = False
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede3.nombre:
-                                tiene_sede = True
-                                break
-                        if tiene_sede:
-                            cuenta_creada.sede.append(sede3)
-                            sede3.personal.append(cuenta_creada)
-                            Gestor_Base.actualizar_objeto(sede3, id_sede3)
-                            break
-                        else:
-                            print("no tienes permiso para crear una cuenta en esta sede")
-                            print()
-                    if opc == "4":
-                        id_sede, sede = Gestor_Base.buscar_objeto("MedPLus Medellin", "Sede")
-                        id_sede2, sede2 = Gestor_Base.buscar_objeto("MedPLus Manizales", "Sede")
-                        id_sede3, sede3 = Gestor_Base.buscar_objeto("MedPLus Bogota", "Sede")
-                        tiene_sede = 0
-                        for sed in cuenta.sede:
-                            if sed.nombre == sede.nombre or sed.nombre == sede2.nombre or sed.nombre == sede3.nombre:
-                                tiene_sede += 1
-                        if tiene_sede == 3:
-                            cuenta_creada.sede.append(sede)
-                            sede.personal.append(cuenta_creada)
-                            Gestor_Base.actualizar_objeto(sede, id_sede)
-                            cuenta_creada.sede.append(sede2)
-                            sede2.personal.append(cuenta_creada)
-                            Gestor_Base.actualizar_objeto(sede2, id_sede2)
-                            cuenta_creada.sede.append(sede3)
-                            sede3.personal.append(cuenta_creada)
-                            Gestor_Base.actualizar_objeto(sede3, id_sede3)
-                            break
-                        else:
-                            print("no tienes permiso para crear una cuenta en estas sedes")
-                            print()
-                else:
-                    print("Error: Sede seleccionada no válida. Intente de nuevo.")
+            if sede == "Manizales" or sede == "Medellin-Manizales-Bogota":
+                id_sede, sede_obj = Gestor_Base.buscar_objeto("MedPLus Manizales", "Sede")
+                cuenta_creada.sede.append(sede_obj)
+                sede_obj.personal.append(cuenta_creada)
+                Gestor_Base.actualizar_objeto(sede_obj, id_sede)
 
-        Gestor_Base.guardar_objeto(cuenta_creada)
-        print()
-        print("¡Registro exitoso!")
-        print()
-        from src.ui_main.Menu_inicial import Menu_inicial
-        Menu_inicial.menu_inicial_Administrativo(cuenta)
+            if sede == "Bogota" or sede == "Medellin-Manizales-Bogota":
+                id_sede, sede_obj = Gestor_Base.buscar_objeto("MedPLus Bogota", "Sede")
+                cuenta_creada.sede.append(sede_obj)
+                sede_obj.personal.append(cuenta_creada)
+                Gestor_Base.actualizar_objeto(sede_obj, id_sede)
+
+            Gestor_Base.guardar_objeto(cuenta_creada)
+            messagebox.showinfo("Éxito", "¡Cuenta creada con éxito!")
+            Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
+
+        # Etiquetas y entradas para la información de la cuenta
+        label_nombre = tk.Label(frame, text="Nombre:")
+        label_nombre.pack(pady=5)
+        entrada_nombre = tk.Entry(frame)
+        entrada_nombre.pack(pady=5)
+
+        label_apellido = tk.Label(frame, text="Apellido:")
+        label_apellido.pack(pady=5)
+        entrada_apellido = tk.Entry(frame)
+        entrada_apellido.pack(pady=5)
+
+        label_doc = tk.Label(frame, text="Número de documento:")
+        label_doc.pack(pady=5)
+        entrada_doc = tk.Entry(frame)
+        entrada_doc.pack(pady=5)
+
+        label_nacimiento = tk.Label(frame, text="Fecha de nacimiento (DD/MM/AAAA):")
+        label_nacimiento.pack(pady=5)
+        entrada_nacimiento = tk.Entry(frame)
+        entrada_nacimiento.pack(pady=5)
+
+        label_correo = tk.Label(frame, text="Correo:")
+        label_correo.pack(pady=5)
+        entrada_correo = tk.Entry(frame)
+        entrada_correo.pack(pady=5)
+
+        label_contrasena = tk.Label(frame, text="Contraseña:")
+        label_contrasena.pack(pady=5)
+        entrada_contrasena = tk.Entry(frame, show="*")
+        entrada_contrasena.pack(pady=5)
+
+        # Menú desplegable para seleccionar el rol
+        label_rol = tk.Label(frame, text="Seleccione el rol:")
+        label_rol.pack(pady=5)
+        rol_var = tk.StringVar(frame)
+        rol_var.set("Administrativo")  # valor por defecto
+        roles = ["Administrativo", "Clinico", "Administrativo-Clinico"]
+        rol_menu = tk.OptionMenu(frame, rol_var, *roles)
+        rol_menu.pack(pady=5)
+
+        # Menú desplegable para seleccionar la sede
+        label_sede = tk.Label(frame, text="Seleccione la sede:")
+        label_sede.pack(pady=5)
+        sede_var = tk.StringVar(frame)
+        sede_var.set("Medellin")  # valor por defecto
+        sedes = ["Medellin", "Manizales", "Bogota", "Medellin-Manizales-Bogota"]
+        sede_menu = tk.OptionMenu(frame, sede_var, *sedes)
+        sede_menu.pack(pady=5)
+
+        # Botón para finalizar la creación de la cuenta
+        boton_finalizar = tk.Button(frame, text="Finalizar Creación", command=finalizar_creacion)
+        boton_finalizar.pack(pady=20)
+
+        # Botón para cancelar la creación de la cuenta
+        boton_cancelar = tk.Button(frame, text="Cancelar", command=lambda: volver_menu(cuenta, ventana))
+        boton_cancelar.pack()
