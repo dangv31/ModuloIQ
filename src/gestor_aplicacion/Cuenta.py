@@ -11,3 +11,6 @@ class Cuenta():
         self.sede = []
         self.estado = True
         self.observaciones = []
+
+    def __str__(self):
+        return self.nombres + " " + self.apellidos

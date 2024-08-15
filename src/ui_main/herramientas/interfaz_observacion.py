@@ -21,6 +21,10 @@ class Interfaz_Observacion:
                 Cambiar_Estado.cambiar_estado(objeto, cuenta, id)
                 objeto.observaciones.append(Observacion(cuenta, detalle))
                 Gestor_Base.actualizar_objeto(objeto, id)
+            elif tipo_cambio == "estado_categoria":
+                Cambiar_Estado.cambiar_estado(objeto[1], cuenta, id)
+                objeto[0].observaciones.append(Observacion(cuenta, detalle))
+                Gestor_Base.actualizar_objeto(objeto[0], id)
             messagebox.showinfo("Éxito", "¡Observación y cambio registrado con éxito!")
             from src.ui_main.Menu_inicial import Menu_inicial
             Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
