@@ -28,33 +28,50 @@ class Ver_Lista_Maestros:
                 cls.volver_menu(cuenta, ventana)
             return
 
-        frame = ttk.Frame(ventana)
-        frame.pack(fill=tk.BOTH, expand=True)
+        # Crear un canvas con scrollbar
+        canvas = tk.Canvas(ventana)
+        scrollbar = tk.Scrollbar(ventana, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # Empaquetar el canvas y scrollbar
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
 
         # Título
-        label_titulo = tk.Label(frame, text="Lista de Maestros", font=('Arial', 14, 'bold'))
+        label_titulo = tk.Label(scrollable_frame, text="Lista de Maestros", font=('Arial', 14, 'bold'))
         label_titulo.pack(pady=10)
 
         # Mostrar cada maestro
         for indice, (ID, maestro) in enumerate(lista_maestros, start=1):
-            label_maestro = tk.Label(frame, text=f"ID:{ID} - Maestro {indice}: {maestro.nombre}", font=('Arial', 12))
+            label_maestro = tk.Label(scrollable_frame, text=f"ID:{ID} - Maestro {indice}: {maestro.nombre}")
             label_maestro.pack(anchor="w", padx=10, pady=2)
 
-            label_columnas = tk.Label(frame, text="Columnas: " + ", ".join(maestro.columnas), font=('Arial', 10))
+            label_columnas = tk.Label(scrollable_frame, text="Columnas: " + ", ".join(maestro.columnas))
             label_columnas.pack(anchor="w", padx=20)
-            label_cat = tk.Label(frame, text="Categorias:", font=('Arial', 10))
+
+            label_cat = tk.Label(scrollable_frame, text="Categorias:")
             label_cat.pack(anchor="w", padx=20)
             for categoria in maestro.categorias:
-                label_categorias = tk.Label(frame, text=categoria, font=('Arial', 10))
+                label_categorias = tk.Label(scrollable_frame, text=categoria)
                 label_categorias.pack(anchor="w", padx=20)
 
-            label_obs = tk.Label(frame, text="Observaciones:")
+            label_obs = tk.Label(scrollable_frame, text="Observaciones:")
             label_obs.pack(anchor="w", padx=20)
-            label_observaciones = tk.Label(frame, text=maestro.observaciones, font=('Arial', 10))
+            label_observaciones = tk.Label(scrollable_frame, text=maestro.observaciones)
             label_observaciones.pack(anchor="w", padx=20)
 
-            separator = ttk.Separator(frame, orient='horizontal')
+            separator = ttk.Separator(scrollable_frame, orient='horizontal')
             separator.pack(fill=tk.X, pady=5)
 
-        boton_volver = tk.Button(frame, text="Volver al menú inicial", command=lambda: volver_menu(cuenta, ventana))
+        boton_volver = tk.Button(scrollable_frame, text="Volver al menú inicial",
+                                 command=lambda: volver_menu(cuenta, ventana))
         boton_volver.pack(pady=20)

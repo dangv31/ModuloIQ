@@ -4,6 +4,7 @@ from tkinter import messagebox, ttk
 from src.base_datos.Gestor_Base import Gestor_Base
 from src.ui_main.gestion_maestros.Crear_Maestro import Crear_Maestro
 from src.ui_main.herramientas.buscar_maestro import buscar_maestro
+from src.ui_main.herramientas.volver_menu import volver_menu
 
 class Ver_Maestro:
     @classmethod
@@ -47,6 +48,8 @@ class Ver_Maestro:
             for observacion in maestro.observaciones:
                 label_observacion = tk.Label(frame_observaciones, text=observacion)
                 label_observacion.pack()
+            boton_volver = tk.Button(frame_observaciones, text="Volver", command=lambda: volver_menu(cuenta, ventana))
+            boton_volver.pack()
         from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
         imprimir_titulo(ventana, "Buscar maestro")
         frame = ttk.Frame(ventana)
