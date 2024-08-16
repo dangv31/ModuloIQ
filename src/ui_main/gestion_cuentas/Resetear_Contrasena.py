@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-from src.base_datos.Gestor_Base import Gestor_Base
-from src.gestor_aplicacion.Observacion import Observacion
 from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
 from src.ui_main.herramientas.interfaz_observacion import Interfaz_Observacion
 from src.ui_main.herramientas.volver_menu import volver_menu
