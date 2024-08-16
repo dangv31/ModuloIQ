@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from src.gestor_aplicacion.Observacion import Observacion
-from src.base_datos.Gestor_Base import Gestor_Base
 from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
 from src.ui_main.herramientas.volver_menu import volver_menu
 from src.ui_main.herramientas.interfaz_observacion import Interfaz_Observacion
+from src.base_datos.Gestor_Base import Gestor_Base
 
 class Editar_Datos_Basicos_Cuenta:
     @classmethod
@@ -35,6 +34,44 @@ class Editar_Datos_Basicos_Cuenta:
         def cambiar_correo():
             correo_nuevo = entry_correo.get()
             cuenta_e.correo = correo_nuevo
+            Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
+
+        def cambiar_sede():
+            nueva_sede = sede_var.get()
+            cuenta_e.sede.clear()
+
+            if nueva_sede == "Medellin" or nueva_sede == "Medellin-Manizales-Bogota":
+                id_sede, sede_obj = Gestor_Base.buscar_objeto("MedPLus Medellin", "Sede")
+                cuenta_e.sede.append(sede_obj)
+                sede_obj.personal.append(cuenta_e)
+                Gestor_Base.actualizar_objeto(sede_obj, id_sede)
+
+            if nueva_sede == "Manizales" or nueva_sede == "Medellin-Manizales-Bogota":
+                id_sede, sede_obj = Gestor_Base.buscar_objeto("MedPLus Manizales", "Sede")
+                cuenta_e.sede.append(sede_obj)
+                sede_obj.personal.append(cuenta_e)
+                Gestor_Base.actualizar_objeto(sede_obj, id_sede)
+
+            if nueva_sede == "Bogota" or nueva_sede == "Medellin-Manizales-Bogota":
+                id_sede, sede_obj = Gestor_Base.buscar_objeto("MedPLus Bogota", "Sede")
+                cuenta_e.sede.append(sede_obj)
+                sede_obj.personal.append(cuenta_e)
+                Gestor_Base.actualizar_objeto(sede_obj, id_sede)
+
+            Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
+
+        def cambiar_rol():
+            nuevo_rol = rol_var.get()
+            cuenta_e.rol.clear()
+
+            if nuevo_rol == "Administrativo":
+                cuenta_e.rol.append("Administrativo")
+            elif nuevo_rol == "Clinico":
+                cuenta_e.rol.append("Clinico")
+            elif nuevo_rol == "Administrativo-Clinico":
+                cuenta_e.rol.append("Administrativo")
+                cuenta_e.rol.append("Clinico")
+
             Interfaz_Observacion.generar_observacion(cuenta, cuenta_e, id, ventana, "info")
 
         imprimir_titulo(ventana, "Editar datos básicos de la cuenta")
@@ -81,6 +118,28 @@ class Editar_Datos_Basicos_Cuenta:
         entry_correo.pack(pady=5)
         btn_cambiar_correo = tk.Button(frame, text="Cambiar Correo", command=cambiar_correo)
         btn_cambiar_correo.pack(pady=5)
+
+        # Menú desplegable para cambiar la sede
+        label_sede = tk.Label(frame, text="Seleccione la nueva sede:")
+        label_sede.pack(pady=5)
+        sede_var = tk.StringVar(frame)
+        sede_var.set("Medellin")  # valor por defecto
+        sedes = ["Medellin", "Manizales", "Bogota", "Medellin-Manizales-Bogota"]
+        sede_menu = tk.OptionMenu(frame, sede_var, *sedes)
+        sede_menu.pack(pady=5)
+        btn_cambiar_sede = tk.Button(frame, text="Cambiar Sede", command=cambiar_sede)
+        btn_cambiar_sede.pack(pady=5)
+
+        # Menú desplegable para cambiar el rol
+        label_rol = tk.Label(frame, text="Seleccione el nuevo rol:")
+        label_rol.pack(pady=5)
+        rol_var = tk.StringVar(frame)
+        rol_var.set("Administrativo")  # valor por defecto
+        roles = ["Administrativo", "Clinico", "Administrativo-Clinico"]
+        rol_menu = tk.OptionMenu(frame, rol_var, *roles)
+        rol_menu.pack(pady=5)
+        btn_cambiar_rol = tk.Button(frame, text="Cambiar Rol", command=cambiar_rol)
+        btn_cambiar_rol.pack(pady=5)
 
         # Opción para volver al menú inicial
         btn_volver = tk.Button(frame, text="Volver al Menú Inicial", command=lambda: volver_menu(cuenta, ventana))

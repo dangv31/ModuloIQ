@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from src.base_datos.Gestor_Base import Gestor_Base
-from src.ui_main.Cambiar_Estado import Cambiar_Estado
 from src.ui_main.gestion_cuentas.Editar_Datos_Basicos_Cuenta import Editar_Datos_Basicos_Cuenta
 from src.ui_main.gestion_cuentas.Resetear_Contrasena import Resetear_Contrasena
 from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo

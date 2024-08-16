@@ -27,15 +27,20 @@ class Crear_Cuenta:
                 messagebox.showerror("Error", "El número de documento debe ser un valor numérico.")
 
         def finalizar_creacion():
-            nombre = entrada_nombre.get()
-            apellido = entrada_apellido.get()
+            nombre = entrada_nombre.get().strip()
+            apellido = entrada_apellido.get().strip()
             doc = verificar_documento()
-            if doc is None:
+            nacimiento = entrada_nacimiento.get().strip()
+            correo = entrada_correo.get().strip()
+            contrasena = entrada_contrasena.get().strip()
+
+            # Verificar si algún campo está vacío
+            if not nombre or not apellido or not doc or not nacimiento or not correo or not contrasena:
+                messagebox.showerror("Error", "Todos los campos son obligatorios.")
                 return
 
-            nacimiento = entrada_nacimiento.get()
-            correo = entrada_correo.get()
-            contrasena = entrada_contrasena.get()
+            if doc is None:
+                return
 
             cuenta_creada = Cuenta(nombre, apellido, doc, nacimiento, correo, contrasena)
 

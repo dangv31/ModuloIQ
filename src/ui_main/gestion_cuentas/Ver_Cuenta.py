@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 from src.base_datos.Gestor_Base import Gestor_Base
+from src.ui_main.herramientas.volver_menu import volver_menu
+
 
 class Ver_Cuenta:
     @classmethod
@@ -74,7 +76,3 @@ class Ver_Cuenta:
         boton_volver = tk.Button(frame, text="Volver al menú principal",
                                  command=lambda: volver_menu(cuenta_principal, ventana))
         boton_volver.pack(pady=10)
-
-def volver_menu(cuenta, ventana):
-    from src.ui_main.Menu_inicial import Menu_inicial
-    Menu_inicial.menu_inicial_Administrativo(cuenta, ventana)
