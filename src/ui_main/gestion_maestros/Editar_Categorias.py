@@ -71,6 +71,10 @@ class Editar_Categorias:
             frame2.pack()
             boton_confirmar = tk.Button(frame2, text="Agregar categoria", command=registrar_categoria)
             boton_confirmar.pack()
+            boton_volver = tk.Button(frame2, text="Cancelar",
+                                     command=lambda: volver_menu(cuenta, ventana))
+            boton_volver.pack()
+
 
         imprimir_titulo(ventana, "Editar Categorias")
         frame = ttk.Frame(ventana)
