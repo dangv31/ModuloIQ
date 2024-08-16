@@ -7,6 +7,7 @@ from src.gestor_aplicacion.Maestro import Maestro
 from src.gestor_aplicacion.Observacion import Observacion
 from src.ui_main.herramientas.imprimir_titulo import imprimir_titulo
 from src.ui_main.Cambiar_Estado import Cambiar_Estado
+from src.ui_main.herramientas.volver_menu import volver_menu
 
 class Interfaz_Observacion:
     @classmethod
@@ -38,3 +39,5 @@ class Interfaz_Observacion:
 
         btn_registrar = tk.Button(ventana, text="Registrar Observación", command=registrar_observacion)
         btn_registrar.pack(pady=10)
+        btn_cancelar = tk.Button(ventana, text="Cancelar", command=lambda:volver_menu(cuenta, ventana))
+        btn_cancelar.pack(pady=10)
