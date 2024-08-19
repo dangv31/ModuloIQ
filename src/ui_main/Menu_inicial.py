@@ -33,10 +33,12 @@ class Menu_inicial:
         opcion_gestion_maestros.add_command(label="Ver Maestro", command=lambda: Ver_Maestro.ver_maestro(cuenta, frame))
         opcion_gestion_maestros.add_command(label="Ver Lista Maestros", command=lambda: Ver_Lista_Maestros.ver_lista_maestros(cuenta, frame))
         opcion_gestion_maestros.add_command(label="Editar Maestro", command=lambda: Editar_Maestro.editar_maestro(cuenta,frame))
+        
         opcion_gestion_sedes = tk.Menu(menu_admin, tearoff=0)
         menu_admin.add_cascade(label="Gestion Sedes", menu=opcion_gestion_sedes)
-        opcion_gestion_sedes.add_command(label="Ver Sede")
-        opcion_gestion_sedes.add_command(label="Editar Sede")
+        opcion_gestion_sedes.add_command(label="Editar Sede", command=lambda: Editar_Sede.editar_sede(cuenta, frame))
+        opcion_gestion_sedes.add_command(label="Ver Sede", command=lambda: Ver_Sede.ver_sede(cuenta, frame))
+        opcion_gestion_sedes.add_command(label="Ver Lista De Sedes", command=lambda: Ver_Lista_Sedes.ver_lista_sedes(cuenta, frame))
 
 
     @classmethod
@@ -58,5 +60,5 @@ class Menu_inicial:
         opcion_gestion_maestros.add_command(label="Ver Maestro")
         opcion_gestion_sedes = tk.Menu(menu_admin, tearoff=0)
         menu_admin.add_cascade(label="Gestion Sedes", menu=opcion_gestion_sedes)
-        opcion_gestion_sedes.add_command(label="Ver Sede")
+        opcion_gestion_sedes.add_command(label="Ver Sede", command=lambda: Ver_Sede.ver_sede(cuenta, frame))
 
