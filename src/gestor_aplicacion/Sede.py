@@ -16,20 +16,18 @@ class Sede:
         self.observaciones = []
 
     def imprimir_info(self):
-        import tkinter as tk
-
-        tk.Label(ventana, text="-------------Información de Sede-------------").pack()
-        tk.Label(ventana, text="Nombre: " + self.nombre).pack()
-        tk.Label(ventana, text="Quirófanos: " + str(self.quirofanos)).pack()
-        tk.Label(ventana, text="Salas de espera: " + str(self.salas_de_espera)).pack()
-        tk.Label(ventana, text="Personal: " + str(len(self.personal))).pack()
-        tk.Label(ventana, text="Consultorios: " + str(self.consultorios)).pack()
-        tk.Label(ventana, text="Dirección: " + self.direccion).pack()
-        tk.Label(ventana, text="Pacientes: " + str(self.pacientes)).pack()
-        tk.Label(ventana, text="Sillas: " + str(self.sillas)).pack()
-        tk.Label(ventana, text="Camas: " + str(self.camas)).pack()
-        tk.Label(ventana, text="Ambulancias: " + str(self.ambulancias)).pack()
-        tk.Label(ventana, text="Estado: " + ("habilitada" if self.estado else "deshabilitada")).pack()
+        print("-------------Informacion de sede-------------")
+        print("Nombre:", self.nombre)
+        print("Quirofanos:", self.quirofanos)
+        print("Salas de espera:", self.salas_de_espera)
+        print("Personal:", len(self.personal))
+        print("Consultorios:", self.consultorios)
+        print("Direccion:", self.direccion)
+        print("Pacientes:", self.pacientes)
+        print("Sillas:", self.sillas)
+        print("Camas:", self.camas)
+        print("Ambulancias:", self.ambulancias)
+        print("Estado: ", "habilitada" if self.estado else "deshabilitada")
     def __str__(self):
         return self.nombre
 
