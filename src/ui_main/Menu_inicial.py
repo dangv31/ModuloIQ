@@ -9,6 +9,11 @@ from src.ui_main.gestion_maestros.Crear_Maestro import Crear_Maestro
 from src.ui_main.gestion_maestros.Ver_Lista_Maestros import Ver_Lista_Maestros
 from src.ui_main.gestion_maestros.Ver_Maestro import Ver_Maestro
 from src.ui_main.gestion_maestros.Editar_Maestro import Editar_Maestro
+
+from src.ui_main.gestion_sedes.Editar_Sede import Editar_Sede
+from src.ui_main.gestion_sedes.Ver_Lista_Sedes import Ver_Lista_Sedes
+from src.ui_main.gestion_sedes.Ver_Sede import Ver_Sede
+
 class Menu_inicial:
     @classmethod
     def menu_inicial_Administrativo(cls, cuenta, frame):
