@@ -60,5 +60,8 @@ class Ver_Maestro:
         entrada_nombre.pack(pady=5)
         boton_buscar = tk.Button(frame, text="Buscar maestro", command=encontrar_maestro)
         boton_buscar.pack()
+        boton_volver = tk.Button(frame, text="Volver al menú inicial",
+                                 command=lambda: volver_menu(cuenta, ventana))
+        boton_volver.pack(pady=20)
 
 
