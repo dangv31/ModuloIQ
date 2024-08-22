@@ -55,5 +55,5 @@ class Ver_Lista_Cuentas:
             separator.pack(fill=tk.X, pady=5)
 
         # Botón para volver al menú inicial
-        boton_volver = tk.Button(frame, text="Volver al menú inicial", command=lambda: volver_menu(cuenta_principal, ventana))
+        boton_volver = tk.Button(frame, text="Volver al menú principal", command=lambda: volver_menu(cuenta_principal, ventana))
         boton_volver.pack(pady=20)

@@ -69,3 +69,8 @@ class Editar_Cuenta:
 
         boton_buscar = tk.Button(frame, text="Buscar Cuenta", command=encontrar_cuenta)
         boton_buscar.pack(pady=10)
+
+        # Botón para regresar al menú principal
+        boton_volver = tk.Button(frame, text="Volver al menú principal",
+                                 command=lambda: volver_menu(cuenta, ventana))
+        boton_volver.pack(pady=10)
